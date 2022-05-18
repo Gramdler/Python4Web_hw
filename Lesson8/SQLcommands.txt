@@ -1,0 +1,97 @@
+--Create tables
+
+CREATE TABLE marks (
+    id INT PRIMARY KEY,
+    mark_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subjects (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),   
+    age TINYINT UNSIGNED,
+    group_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id)
+          ON DELETE SET NULL
+          ON UPDATE CASCADE
+);
+
+CREATE TABLE groups (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),
+    count_students TINYINT UNSIGNED,
+    students_id = INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_students_id FOREIGN KEY (students_id) REFERENCES students (id)
+          ON DELETE SET NULL
+          ON UPDATE CASCADE
+);
+
+
+CREATE TABLE teachers (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),   
+    age TINYINT UNSIGNED,
+    courses_id INT,
+    group_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_subjects_id FOREIGN KEY (subjects_id) REFERENCES subjects (id),
+    CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id)
+);
+
+CREATE TABLE courses (
+    id INT PRIMARY KEY,
+    name VARCHAR(30),   
+    subjects_id INT,
+    teachers_id INT,
+    group_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_teachers_id FOREIGN KEY (teachers_id) REFERENCES teachers (id),
+    CONSTRAINT fk_subjects_id FOREIGN KEY (subjects_id) REFERENCES subjects (id),
+    CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES groups (id)
+);
+
+
+CREATE TABLE journal_lessons (
+    id INT PRIMARY KEY,
+    subject_id INT,
+    teachers_id INT,
+    students_id INT,
+    mark_id INT,
+    date mark TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_subject_id FOREIGN KEY (subject_id) REFERENCES subjects (id),
+    CONSTRAINT fk_teachers_id FOREIGN KEY (teachers_id) REFERENCES teachers (id),
+    CONSTRAINT fk_students_id FOREIGN KEY (students_id) REFERENCES students (id),
+    CONSTRAINT fk_mark_id FOREIGN KEY (mark_id) REFERENCES marks (id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
+);
+
+--Insert information
+
+INSERT INTO marks (id, mark_id)
+VALUES (1, 1), (2, 2), (3, 3), (4, 4), (5, 5);
+
+INSERT INTO subjects (id, name)
+VALUES (1, 'C++'), (2, 'NODE.js'), (3, 'Python'), (4, 'Java'), (5, 'HTML/CSS');
+
+INSERT INTO groups (id, name, count_students)
+VALUES (1, 'Star', 10), (2, 'Jupyter', 10), (3, 'Mars', 10);
+
+INSERT INTO teachers (id, name, age, group_id)
+VALUES (1, 'Holmes', 33, 1), (2, 'Watson', 35, 2), (3, 'Hanibal', 28, 3);
+
+INSERT INTO courses (id, name, subjects, teachers, group_id)
+VALUES (1, 'Programming', 1, 1, 1), (2, 'WebBackend', 2, 2, 2), (3, 'WebFronted', 5, 3, 3), (4, 'Programming1', 4, 1, 1), (5, 'WebBackend2', 3, 2, 2);
+
+INSERT INTO students (id, name, age, group_id)
+VALUES (1, 'Vasya', 20, 1), (2, 'Lisa', 19, 1), (3, 'Hanibal', 18, 1), (4, 'Petr', 19, 1), (5, 'Kira', 19, 1), (6, 'John', 20, 1), (7, 'Katy', 19, 1), (8,'Nikolay',19,1), (9,'Aleksandra', 18, 1), (10,'Victor', 20, 1), (11, 'Vasya1', 20, 2), (12, 'Lisa1', 19, 2), (13, 'Hanibal1', 18, 2), (14, 'Petr1', 19, 2), (15, 'Kira1', 19, 2), (16, 'John1', 20, 2), (17, 'Katy1', 19, 2), (18,'Nikolay1',19,2), (19,'Aleksandra1', 18, 2), (20,'Victor1', 20, 2), (21, 'Vasya2', 20, 3), (22, 'Lisa2', 19, 3), (23, 'Hanibal2', 18, 3), (24, 'Petr2', 19, 3), (25, 'Kira2', 19, 3), (26, 'John2', 20, 3), (27, 'Katy2', 19, 3), (28,'Nikolay2',19,3), (29,'Aleksandra2', 18, 3), (30,'Victor2', 20, 3);
+

@@ -1,0 +1,10 @@
+.vscode
+.idea
+.DS_Store
+node_modules
+.env
+build/
+*.psd
+__pycache__/
+config.ini
+connect_db.py
